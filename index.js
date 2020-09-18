@@ -2,6 +2,7 @@ require('dotenv/config');
 const express = require('express');
 var bodyParser = require('body-parser');
 const authRoute = require('./routes/auth.route');
+const postRoute = require('./routes/posts.route');
 
 const app = express();
 const port = 3500;
@@ -11,7 +12,9 @@ const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
 app.use('/api/user', authRoute);
+app.use('/api', postRoute);
 
 //connect mongodb
 mongoose.connect(process.env.DB_CONNECTION, function(){
