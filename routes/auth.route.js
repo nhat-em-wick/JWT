@@ -1,15 +1,10 @@
-require('dotenv/config');
 const router = require('express').Router();
 const userModel = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const {registerValidation,loginValidation} = require('../validation/user.validate');
-    
-
-
 
 router.post('/register', async function(req, res){
-
     // validation data
     const {error} = registerValidation(req.body);
     if(error) res.status(400).send(error.details[0].message);
@@ -49,11 +44,14 @@ router.post('/login', async function(req, res){
     if(!valiPass) res.status(400).send('Password is wrong!');
 
     // create and assign a token
-    const token = await jwt.sign({_id: user._id}, process.env.TOKEN_SECRET)
-    res.header('auth-token', token).send(token);
-
+    const token = await jwt.sign({_id: user._id},  process.env.TOKEN_SECRET )
+    //res.header('auth-token', token).send(token);
+    
+    //create cookie
+    res.cookie('access_token', token);
     res.send('login!!!')
-
 });
+
+
 
 module.exports = router;
