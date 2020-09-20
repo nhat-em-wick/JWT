@@ -28,7 +28,7 @@ app.get('/users', async function(req, res){
 
   let users = await (await userModel.find()).slice(start,end);
 
-  res.render('index',{users: users, totalPages: totalPages});
+  res.render('index',{users: users, totalPages: totalPages, page:page});
 })
 
 //connect mongodb

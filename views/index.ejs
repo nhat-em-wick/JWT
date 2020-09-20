@@ -12,11 +12,9 @@
 <body>
     <div class="container">
         <% users.forEach(user => { %>
-        <span><%= user.name %> </span>
+        <span><%= user.name %></span><br>
         <% }); %>
-        <% for(var i = 1; i <= totalPages; i++){ %>     
-        <a href="?page=<%= i %> "><%= i %> </a>
-        <% } %>
+        <%- include('./pagination') %> 
     </div>
 </body>
 

@@ -11,23 +11,25 @@ router.post('/register', async function(req, res){
 
     // checking if user is already in the database
     const emailExist = await userModel.findOne({email: req.body.email});
-    if(emailExist) res.status(400).send('Email already exits');
+    if(emailExist){
+        res.status(400).send('Email already exits');
+    } else{
+        // hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-    // hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-    // create user
-    const user = new userModel({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword
-    });
-    try {
-        let saveUSer = await user.save();
-        res.send({user: user._id});
-    } catch (error) {
-        res.sendStatus(400);
+        // create user
+        const user = new userModel({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword
+        });
+        try {
+            let saveUSer = await user.save();
+            res.send({user: user._id});
+        } catch (error) {
+            res.sendStatus(400);
+        }
     }
 });
 
